@@ -1,18 +1,20 @@
 #include <iostream>
-
 using namespace std;
 
-class BoundCheck2DIntArray
+class BoundCheckIntArray
 {
 	private:
 		int * arr;
 		int arrlen;
-		BoundCheck2DIntArray(const BoundCheck2DIntArray& arr) {}\
-		BoundCheck2DIntArray& operator=(const BoundCheck2DIntArray& arr) { return *this; }
-		
+		BoundCheckIntArray(const BoundCheckIntArray& arr) {}
+		void operator=(const BoundCheckIntArray& arr) {}
+	
 	public:
-		BoundCheck2DIntArray(int len) : arrlen(len) { arr = new int[len]; }
-		int& operator[] (int idx)
+		BoundCheckIntArray(int len) : arrlen(len)
+		{
+			arr = new int[len];
+		}
+		int& operator[](int idx)
 		{
 			if(idx < 0 || idx >= arrlen)
 			{
@@ -21,7 +23,7 @@ class BoundCheck2DIntArray
 			}
 			return arr[idx];
 		}
-		int operator[] (int idx) const
+		int operator[](int idx) const
 		{
 			if(idx < 0 || idx >= arrlen)
 			{
@@ -30,23 +32,63 @@ class BoundCheck2DIntArray
 			}
 			return arr[idx];
 		}
-		int GetArrLen() const { return arrlen; }
-		~BoundCheck2DIntArray() {delete []arr; }
+		int GetArrLen() const
+		{
+			return arrlen;
+		}
+		~BoundCheckIntArray()
+		{
+			delete []arr;
+		}
 };
 
-void ShowAllData(const BoundCheck2DIntArray& ref)
+typedef BoundCheckIntArray * PtrBoundCheckIntArray;
+
+class BoundCheck2DIntArray
 {
-	int len = ref.GetArrLen();
-	for(int idx=0; idx < len; idx++)
-		cout << ref[idx] << endl;
-}
+	private:
+		int arrlen;
+		BoundCheckIntArray **arr;
+		BoundCheck2DIntArray(const BoundCheck2DIntArray& arr){}
+		void operator=(const BoundCheck2DIntArray& arr){}
+		
+	public:
+		BoundCheck2DIntArray(int col, int row) : arrlen(col)
+		{
+			arr = new PtrBoundCheckIntArray[col];
+			for(int i = 0; i < col; i++)
+				arr[i] = new BoundCheckIntArray(row);
+		}
+		~BoundCheck2DIntArray()
+		{
+			for(int i = 0; i < arrlen; i++)
+				delete []arr[i];
+			delete []arr;
+		}
+		BoundCheckIntArray& operator[](int arg)
+		{
+			if(arg > arrlen)
+			{
+				cout << "Array index out of bound exception" << endl;
+				exit(1);
+			}
+			else
+				return *(arr[arg]);
+		}
+};
 
 int main(void)
 {
-	BoundCheck2DIntArray arr(5);
-	for(int i =0; i < 5; i++)
-		arr[i] = (i + 1) * 11;
-	ShowAllData(arr);
+	BoundCheck2DIntArray arr2d(3, 4);
+	
+	for(int n = 0; n < 3; n++)
+		for(int m = 0; m < 4; m++)
+			arr2d[n][m] = n + m;
+	
+	for(int n = 0; n < 3; n++)
+	{
+		for(int m = 0; m < 4; m++)
+			cout << arr2d[n][m] << " ";
+	}
 	return 0;
 }
-
