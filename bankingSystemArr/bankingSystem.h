@@ -1,6 +1,7 @@
 #ifndef __BANKINGSYSTEM_H__
 #define __BANKINGSYSTEM_H__
 
+#include "BoundCheck.h"
 #define NAME_LEN 10
 
 enum {MAKE=1, DEPOSIT, WITHDRAW, INQUIRE, EXIT};
@@ -10,13 +11,14 @@ enum {NORMAL=1, CREDIT=2};
 class Account
 {
 	private:
-		const int accID;
+		int accID;
 		int balance;
 		char * cusName;
 
 	public:
 		Account(int ID, int money, char * name);
 		Account(const Account & ref);
+		Account& operator=(const Account& ref);
 
 		int GetAccID() const;
 		virtual void Deposit(int money);
@@ -48,7 +50,7 @@ class HighCreditAccount : public NormalAccount
 class AccountHandler
 {
 	private:
-		Account * accArr[100];
+		BoundCheckAccountPtrArray
 		int accNum;
 
 	public:

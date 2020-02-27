@@ -1,10 +1,13 @@
 #include <iostream>
 using namespace std;
+#include "bankingSystem.h"
 
-class BoundCheckIntArray
+typedef Account* ACCOUNT_PTR;
+
+class BoundCheckAccountPtrArray
 {
 	private:
-		int * arr;
+		ACCOUNT_PTR * arr;
 		int arrlen;
 		BoundCheckIntArray(const BoundCheckIntArray& arr) {}
 		void operator=(const BoundCheckIntArray& arr) {}
@@ -14,7 +17,7 @@ class BoundCheckIntArray
 		{
 			arr = new int[len];
 		}
-		int& operator[](int idx)
+		ACCOUNT_PTR& operator[](int idx)
 		{
 			if(idx < 0 || idx >= arrlen)
 			{
@@ -23,7 +26,7 @@ class BoundCheckIntArray
 			}
 			return arr[idx];
 		}
-		int operator[](int idx) const
+		ACCOUNT_PTR operator[](int idx) const
 		{
 			if(idx < 0 || idx >= arrlen)
 			{
