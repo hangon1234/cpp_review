@@ -2,17 +2,21 @@
 
 using namespace std;
 
-void func1()
-{
-	cout << "Hey! this is a function" << endl;
-}
-void func2()
-{
-	cout << "Hey! this is a second function" << endl;
-}
 int main(void)
 {
-	cout << "func1 address: " << func1 << endl;
-	cout << "func2 address: " << func2 << endl;
+	int i = 1;
+	try{
+		while(1)
+		{
+			i++;
+			new int[10][10];
+		}
+	}
+	catch(bad_alloc &bad)
+	{
+		cout << bad.what() << endl;
+		cout << "Program dead after " << i << "th allocation" << endl;
+		cout << "exception!" << endl;
+	}
 	return 0;
 }
